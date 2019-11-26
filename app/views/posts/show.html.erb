@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>投稿者:</strong>
+  <%= @post.contributor %>
+</p>
+
+<p>
+  <strong>書き込み内容:</strong>
+  <%= @post.content %>
+</p>
+
+<p>
+  <strong>書き込み番号:</strong>
+  <%= @post.post_number %>
+</p>
+
+
+
+<%#<%= link_to 'Edit', edit_post_path(@post) %> 
+
+
+<%= link_to 'スレッドに戻る', :back %>

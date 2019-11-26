@@ -1,0 +1,59 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>スレッドタイトル:</strong>
+  <%= @topic.title %>
+</p>
+
+<table>
+  <tr>
+    <th>投稿者</th>
+    <th>レス</th>
+    <th>レス番号</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @posts.each do |post| %>
+  <tr>
+    <td><%= post.contributor %></td>
+    <td><%= post.content %></td>
+    <td><%= post.post_number %></td>
+    <td><%= link_to '削除', post, method: :delete, data: { confirm: '本当にスレッドを削除しますか？' } %></td>
+    
+  </tr>
+<% end %>
+</table>
+
+<%= form_for([@topic, @post]) do |f| %>
+  <% if @post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@post.errors.count, "error") %> つのエラーにより書き込みができませんでした:</h2>
+
+      <ul>
+      <% @post.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :投稿者 %>
+    <%= f.text_field :contributor %>
+  </div>
+  <div class="field">
+    <%= f.label :書き込み内容%>
+    <%= f.text_area :content %>
+  </div>
+  <div class="field">
+  
+  </div>
+  <div class="actions">
+    <%= f.submit "書き込む"%>
+  </div>
+<% end %>
+
+<%= link_to 'スレッドの編集', edit_topic_path(@topic) %> |
+<%= link_to 'スレッド一覧に戻る', topics_path %>

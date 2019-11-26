@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>スレッド一覧</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>スレッド名</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @topics.each do |topic| %>
+      <tr>
+        <td><%= topic.title %></td>
+        <td><%= link_to 'スレッドを覗く', topic %></td>
+        <td><%= link_to '編集', edit_topic_path(topic) %></td>
+        <td><%= link_to '削除', topic, method: :delete, data: { confirm: '本当にスレッドを削除しますか？' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Topic', new_topic_path %>
