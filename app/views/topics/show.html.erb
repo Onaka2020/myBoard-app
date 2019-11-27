@@ -5,26 +5,38 @@
   <%= @topic.title %>
 </p>
 
-<table>
-  <tr>
-    <th>投稿者</th>
-    <th>レス</th>
-    <th>レス番号</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+
 
 <% @posts.each do |post| %>
+<table class="info">
   <tr>
-    <td><%= post.contributor %></td>
-    <td><%= post.content %></td>
-    <td><%= post.post_number %></td>
-    <td><%= link_to '削除', post, method: :delete, data: { confirm: '本当にスレッドを削除しますか？' } %></td>
+      <div class="pop-box">
+  <label for="popup-on"><label for="popup-on"><div class="btn-open"></div></label>
+  <input type="checkbox" id="popup-on"><%= post.post_number %>
+  <div class="popup">
     
-  </tr>
-<% end %>
+    <div class="popup-content">
+       <!-- ポップアップの中身 -->
+       
+     <p><%= post.content %></p>
+     
+        <!-- ./ポップアップの中身　ここまで -->
+    </div>
+    <label for="popup-on"><div class="btn-close">閉じる</div></label>
+  </div>
+</div>
+    <td class="num"><%= post.post_number %>人目の投稿者:</td>
+    <td class="contributor"><%= post.contributor %></td>
 </table>
+<table class="comment">
+    <td class="content"><%= post.content %></td>
+    <td calss="reply"><%= link_to '返信',  [@topic, post], method: :reply %></td>
+    <td class="delete"><%= link_to '削除',  [@topic, post], method: :delete, data: { confirm: '本当に書き込みを削除しますか？' } %></td>
+      
+  </tr>
+</table>
+<% end %>
+
 
 <%= form_for([@topic, @post]) do |f| %>
   <% if @post.errors.any? %>
@@ -45,6 +57,7 @@
   </div>
   <div class="field">
     <%= f.label :書き込み内容%>
+    
     <%= f.text_area :content %>
   </div>
   <div class="field">
@@ -54,6 +67,9 @@
     <%= f.submit "書き込む"%>
   </div>
 <% end %>
+
+
+
 
 <%= link_to 'スレッドの編集', edit_topic_path(@topic) %> |
 <%= link_to 'スレッド一覧に戻る', topics_path %>

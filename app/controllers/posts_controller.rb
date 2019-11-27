@@ -1,27 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
-  # GET /posts
-  # GET /posts.json
-  def index(topic_id)
-    @posts = Post.all
-  end
-
-  # GET /posts/1
-  # GET /posts/1.json
-  def show
-  end
-
-  # GET /posts/new
-  def new
-    @post = Post.new
-  end
-
-  # GET /posts/1/edit
-  def edit
-  end
-    
- 
   # POST /posts
   # POST /posts.json
   
@@ -37,9 +16,11 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to [@topic, @post], notice: 'スレッドへの書き込みが完了しました！' }
-        format.json { render :show, status: :created, location: [@post, @post] }
+        format.html { redirect_to @topic, notice: 'スレッドへの書き込みが完了しました！' }
+        format.json { render :show, status: :created, location: @topic }
       else
+        @topic = Topic.find(params[:topic_id])
+        @posts = @topic.posts
         format.html { render :new }
         format.json { render json: @post.errors, status: :unprocessable_entity }
       end
@@ -48,30 +29,42 @@ class PostsController < ApplicationController
 
   # PATCH/PUT /posts/1
   # PATCH/PUT /posts/1.json
-  def update
-    respond_to do |format|
-      if @post.update(post_params)
-        format.html { redirect_to @post, notice: 'Post was successfully updated.' }
-        format.json { render :show, status: :ok, location: @post }
-      else
-        format.html { render :edit }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+
 
   # DELETE /posts/1
   # DELETE /posts/1.json
   def destroy
+    @topic = Topic.find(params[:topic_id])
+    @post = Post.find(params[:id])
     @post.destroy
-    respond_to do |format|
-      format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
+     respond_to do |format|
+      format.html { redirect_to @topic,  notice: '書き込みの削除が完了しました！'  }
       format.json { head :no_content }
     end
   end
 
    
+  def reply
+    @topic = Topic.find(params[:topic_id])
+    @post = @topic.posts.new(post_params)
+    
+    max_num = @topic.posts.maximum(:post_number)
+    max_num = 0 if max_num.blank?
+    @post.post_number = max_num + 1
 
+    respond_to do |format|
+      if @post.save
+        format.html { redirect_to @topic, notice: 'スレッドへの書き込みが完了しました！' }
+        format.json { render :show, status: :created, location: @topic }
+      else
+        @topic = Topic.find(params[:topic_id])
+        @posts = @topic.posts
+        format.html { render :new }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
+      end
+    end
+      
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
