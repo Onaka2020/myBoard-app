@@ -18,9 +18,6 @@ ActiveRecord::Schema.define(version: 2019_11_28_062440) do
     t.integer "post_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "topic_id"
-    t.integer "reply_number"
-    t.integer "reply"
     t.string "img"
   end
 
