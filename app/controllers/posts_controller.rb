@@ -7,13 +7,14 @@ class PostsController < ApplicationController
   
   def create
     @topic = Topic.find(params[:topic_id])
-    #@post = Post.new(post_params)
     @post = @topic.posts.new(post_params)
     
     max_num = @topic.posts.maximum(:post_number)
     max_num = 0 if max_num.blank?
     @post.post_number = max_num + 1
-
+    @post.reply=$reply_id
+   
+    
     respond_to do |format|
       if @post.save
         format.html { redirect_to @topic, notice: 'スレッドへの書き込みが完了しました！' }
@@ -44,32 +45,21 @@ class PostsController < ApplicationController
   end
 
    
-  def reply
-    @topic = Topic.find(params[:topic_id])
-    @post = @topic.posts.new(post_params)
-    
-    max_num = @topic.posts.maximum(:post_number)
-    max_num = 0 if max_num.blank?
-    @post.post_number = max_num + 1
-
-    respond_to do |format|
-      if @post.save
-        format.html { redirect_to @topic, notice: 'スレッドへの書き込みが完了しました！' }
-        format.json { render :show, status: :created, location: @topic }
-      else
-        @topic = Topic.find(params[:topic_id])
-        @posts = @topic.posts
-        format.html { render :new }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
-      end
-    end
-      
+  def show
+   
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.find(params[:id])
+    end
+    
+     def post_params
+      params.require(:post).permit(:title, :text, :img, :remove_img)
+  end
+    def post_params
+       params.require(:post).permit(:title, :text, :img)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

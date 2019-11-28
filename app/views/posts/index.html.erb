@@ -18,9 +18,8 @@
         <td><%= post.contributor %></td>
         <td><%= post.content %></td>
         <td><%= post.post_number %></td>
-        <td><%= link_to 'Show', post %></td>
         <td><%= link_to 'Edit', edit_post_path(post) %></td>
-        <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: '本当に書き込みを削除しますか？' } %></td>
+        <td><%= link_to '削除', post, method: :delete, data: { confirm: '本当に書き込みを削除しますか？' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -28,4 +27,4 @@
 
 <br>
 
-<%= link_to 'New Post', new_post_path %>
+<%= link_to 'スレッドへの書き込み', new_post_path %>

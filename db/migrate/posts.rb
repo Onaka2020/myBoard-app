@@ -4,7 +4,8 @@ class CreatePosts < ActiveRecord::Migration[5.2]
       t.text :contributor
       t.text :content
       t.integer :post_number
-
+     
+      
       t.timestamps
     end
   end

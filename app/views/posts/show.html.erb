@@ -14,8 +14,14 @@
   <strong>書き込み番号:</strong>
   <%= @post.post_number %>
 </p>
-
-
+<p>
+  <strong>Text:</strong>
+  <%= @post.text %>
+</p>
+<p>
+  <strong>Image:</strong>
+  <%= image_tag @post.img.url%>
+</p>
 
 <%#<%= link_to 'Edit', edit_post_path(@post) %> 
 
