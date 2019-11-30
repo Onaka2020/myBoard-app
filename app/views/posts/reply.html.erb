@@ -1,6 +1,16 @@
 <p id="notice"><%= notice %></p>
 
+
+
+
 <p>
+  <% post = Post.where(post_number: @post.reply) 
+     @post = post[0]%>
+     <% if @post.reply.present?%>
+            <% @topic = Topic.find(params[:topic_id]) %>
+            <p> <%=link_to '@'+ @post.reply.to_s,  reply_topic_post_path(@topic,@post)%></p>   
+          
+            <%end%>
   <strong>投稿者:</strong>
   <%= @post.contributor %>
 </p>
@@ -24,8 +34,6 @@
 </p>   
 
 
-<%= render'form',post: @post %>
 
 
-
-<%= link_to 'スレッドに戻る', :back %>
+<%= link_to 'スレッドに戻る', :back%>

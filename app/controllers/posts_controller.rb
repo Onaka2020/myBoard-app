@@ -1,20 +1,29 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :set_post, only: [:reply,:new ,:show, :edit, :update, :destroy]
 
   # POST /posts
   # POST /posts.json
+  def new
+     @post=Post.new
+  end
   
   
   def create
+     
     @topic = Topic.find(params[:topic_id])
     @post = @topic.posts.new(post_params)
     
+
     max_num = @topic.posts.maximum(:post_number)
-    max_num = 0 if max_num.blank?
+    max_num = 0  if max_num.blank?
     @post.post_number = max_num + 1
-    @post.reply=$reply_id
-   
-    
+    if @post.content.match(/@(\d+)/).present?
+        temp_rep = @post.content.match(/@(\d+)/)
+        @post.reply = temp_rep[1]
+        
+    end
+            
+
     respond_to do |format|
       if @post.save
         format.html { redirect_to @topic, notice: 'スレッドへの書き込みが完了しました！' }
@@ -22,7 +31,7 @@ class PostsController < ApplicationController
       else
         @topic = Topic.find(params[:topic_id])
         @posts = @topic.posts
-        format.html { render :new }
+        format.html { render "topics/show" }
         format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
@@ -43,11 +52,17 @@ class PostsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+  
+  def reply
+    
+  end
    
   def show
-   
+    
+    
   end
+  
+  
 
   private
     # Use callbacks to share common setup or constraints between actions.

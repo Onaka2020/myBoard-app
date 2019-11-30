@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resources :topics do
-    resources :posts, :only => [:create, :destroy]
+    resources :posts do
+       get 'reply', :on => :member
+    end
   end
  if Rails.env.production?
    match "*path" , to: redirect('/'), via: 'get'

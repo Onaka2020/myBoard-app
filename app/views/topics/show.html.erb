@@ -16,16 +16,25 @@
 
 </table>
 <table class="comment"id="comment<%= post.post_number %>">
-    <td class="content"id="content<%= post.post_number %>"><%= post.content %></td>
-    <td class="reply"id="reply<%= post.post_number %>">
-   </td>
+    <td class="content"id="content<%= post.post_number %>">
+        <% if post.reply.present?%>
+            
+            <p> <%=link_to '@'+ post.reply.to_s,  reply_topic_post_path(@topic,post)%></p>   
+          
+            <%end%>
+            
+        <%= post.content %></td>
+        
+        
+     <td class="reply"id="reply<%= post.post_number %>"> </td>
+    <%= link_to '返信',  reply_topic_post_path(@topic,post)%>
     <td class="delete"><%= link_to '削除',  [@topic, post], method: :delete, data: { confirm: '本当に書き込みを削除しますか？' } %></td>
       
   </tr>
 </table>
 <p>
-    <% if @post.img? %>
-       <%= image_tag @post.img.url %>
+    <% if post.img? %>
+       <%= image_tag post.img.url %>
     <% end %>
 </p>   
 
@@ -70,7 +79,7 @@
 
 
 
-<%= link_to 'スレッドの編集', edit_topic_path(@topic) %> |
+<%= link_to 'スレッドの編集', edit_topic_path(@topic) %><br>
 <%= link_to 'スレッド一覧に戻る', topics_path %>
 
 
