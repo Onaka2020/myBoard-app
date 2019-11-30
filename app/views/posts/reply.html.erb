@@ -35,5 +35,5 @@
 
 
 
-
-<%= link_to 'スレッドに戻る', topic_path(@topic)%>
+<%@topic = Topic.find(params[:topic_id])%>
+<%= link_to 'スレッドに戻る', topic_path(@topic) %>
