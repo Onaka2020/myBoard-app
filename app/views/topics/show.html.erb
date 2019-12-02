@@ -17,17 +17,19 @@
 </table>
 <table class="comment"id="comment<%= post.post_number %>">
     <td class="content"id="content<%= post.post_number %>">
+    <% post_rep = Post.where(post_number: post.reply) 
+     @post_rep = post_rep[0]%>
+     <%if @post_rep.present?%>
         <% if post.reply.present?%>
             
             <p> <%=link_to '@'+ post.reply.to_s,  reply_topic_post_path(@topic,post)%></p>   
           
-            <%end%>
-            
-        <%= post.content %></td>
+        <%end%>
+    <%end%>       
+    書き込み内容:<%= post.content %></td>
         
         
-     <td class="reply"id="reply<%= post.post_number %>"> </td>
-    <%= link_to '返信',  reply_topic_post_path(@topic,post)%>
+     
     <td class="delete"><%= link_to '削除',  [@topic, post], method: :delete, data: { confirm: '本当に書き込みを削除しますか？' } %></td>
       
   </tr>
